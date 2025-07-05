@@ -108,3 +108,15 @@ if submitted:
         st.success("✅ Tickets sent successfully to your email!")
         
 st.markdown("<hr style='margin-top: 40px; border: 1px solid #333;'/>", unsafe_allow_html=True)
+st.subheader("🔧 Admin Controls")
+
+if st.button("🔁 Reset All Tickets"):
+    try:
+        supabase.table("tickets").update({
+            "used": False,
+            "assigned_to_user": None,
+            "assigned_at": None
+        }).neq("used", False).execute()
+        st.success("✅ All tickets have been reset successfully.")
+    except Exception as e:
+        st.error(f"Failed to reset tickets: {str(e)}")
